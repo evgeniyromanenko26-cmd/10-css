@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10.css Demo</title>
+  <link rel="stylesheet" href="10.css">
+</head>
+<body class="win10" style="padding: 20px 20px 80px;">
+
+  <!-- ===== THEME TOGGLE ===== -->
+  <div style="position: fixed; top: 10px; right: 10px; z-index: 2000;">
+    <button class="theme-toggle" id="themeBtn">
+      <i class="mi mi-sun"></i>
+      <span>Theme</span>
+    </button>
+  </div>
+
+  <!-- ===== MAIN WINDOW ===== -->
+  <div class="window" style="max-width: 600px; margin: 0 auto;">
+
+    <div class="title-bar">
+      <div class="title-bar-text">
+        <i class="mi mi-home mi-sm" style="margin-right: 6px;"></i>
+        10.css — Demo
+      </div>
+      <div class="title-bar-controls">
+        <button title="Minimize"><i class="mi mi-minimize mi-sm"></i></button>
+        <button title="Maximize"><i class="mi mi-maximize mi-sm"></i></button>
+        <button class="close" title="Close" id="closeBtn">
+          <i class="mi mi-close mi-sm"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="window-body">
+
+      <!-- ===== HEADING ===== -->
+      <h1 style="font-size: 20px; margin: 0 0 8px;">
+        <i class="mi mi-star mi-accent"></i>
+        10.css Framework
+      </h1>
+      <p class="text-secondary" style="margin: 0 0 16px;">
+        A Windows 10 style CSS framework with icons, dark theme and animations.
+      </p>
+
+      <!-- ===== BUTTONS ===== -->
+      <h2 style="font-size: 14px; margin: 16px 0 8px;">Buttons</h2>
+      <p style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button class="btn"><i class="mi mi-edit mi-sm"></i> Default</button>
+        <button class="btn btn-primary"><i class="mi mi-checkbox mi-sm"></i> Primary</button>
+        <button class="btn"><i class="mi mi-add mi-sm"></i> Add</button>
+        <button class="btn" disabled><i class="mi mi-delete mi-sm"></i> Disabled</button>
+      </p>
+
+      <!-- ===== INPUTS ===== -->
+      <h2 style="font-size: 14px; margin: 16px 0 8px;">Inputs</h2>
+      <p style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+        <input class="input" type="text" placeholder="Username" style="width: 160px;">
+        <input class="input" type="password" placeholder="Password" style="width: 160px;">
+        <select class="select">
+          <option>Option 1</option>
+          <option>Option 2</option>
+        </select>
+      </p>
+      <p>
+        <textarea class="textarea" placeholder="Your message..." style="width: 100%;"></textarea>
+      </p>
+
+      <!-- ===== CHECKBOXES & RADIOS ===== -->
+      <h2 style="font-size: 14px; margin: 16px 0 8px;">Selection</h2>
+      <p style="display: flex; gap: 16px; flex-wrap: wrap;">
+        <label class="checkbox">
+          <input type="checkbox" checked>
+          <span class="box"></span>
+          Checkbox 1
+        </label>
+        <label class="checkbox">
+          <input type="checkbox">
+          <span class="box"></span>
+          Checkbox 2
+        </label>
+      </p>
+      <p style="display: flex; gap: 16px; flex-wrap: wrap;">
+        <label class="radio">
+          <input type="radio" name="demo" checked>
+          <span class="box"></span>
+          Option A
+        </label>
+        <label class="radio">
+          <input type="radio" name="demo">
+          <span class="box"></span>
+          Option B
+        </label>
+        <label class="radio">
+          <input type="radio" name="demo">
+          <span class="box"></span>
+          Option C
+        </label>
+      </p>
+
+      <!-- ===== PROGRESS ===== -->
+      <h2 style="font-size: 14px; margin: 16px 0 8px;">Progress</h2>
+      <div class="progress" style="margin-bottom: 8px;">
+        <div class="progress-bar" id="progressBar" style="width: 35%;"></div>
+      </div>
+      <button class="btn" id="progressBtn">
+        <i class="mi mi-chevron-right mi-sm"></i> Increase
+      </button>
+
+      <!-- ===== CARDS ===== -->
+      <h2 style="font-size: 14px; margin: 16px 0 8px;">Cards</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px;">
+        <div class="card">
+          <i class="mi mi-folder mi-lg mi-accent"></i>
+          <h3 style="font-size: 13px; margin: 8px 0 4px;">Folder</h3>
+          <p class="text-secondary" style="font-size: 12px; margin: 0;">A simple card with an icon.</p>
+        </div>
+        <div class="card">
+          <i class="mi mi-globe mi-lg mi-accent"></i>
+          <h3 style="font-size: 13px; margin: 8px 0 4px;">Browser</h3>
+          <p class="text-secondary" style="font-size: 12px; margin: 0;">Another card example.</p>
+        </div>
+        <div class="card">
+          <i class="mi mi-user mi-lg mi-accent"></i>
+          <h3 style="font-size: 13px; margin: 8px 0 4px;">Profile</h3>
+          <p class="text-secondary" style="font-size: 12px; margin: 0;">Hover me to see animation.</p>
+        </div>
+      </div>
+
+      <!-- ===== ICONS ===== -->
+      <h2 style="font-size: 14px; margin: 16px 0 8px;">Icons</h2>
+      <p style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+        <i class="mi mi-home mi-lg mi-accent"></i>
+        <i class="mi mi-settings mi-lg"></i>
+        <i class="mi mi-mail mi-lg mi-accent"></i>
+        <i class="mi mi-photos mi-lg"></i>
+        <i class="mi mi-music mi-lg mi-accent"></i>
+        <i class="mi mi-games mi-lg"></i>
+        <i class="mi mi-weather mi-lg mi-accent"></i>
+        <i class="mi mi-search mi-lg"></i>
+        <i class="mi mi-star mi-lg" style="color: #ffb900;"></i>
+        <i class="mi mi-heart mi-lg" style="color: #e81123;"></i>
+      </p>
+
+      <!-- ===== MENU ===== -->
+      <h2 style="font-size: 14px; margin: 16px 0 8px;">Menu</h2>
+      <div class="menu" style="max-width: 200px;">
+        <div class="menu-item"><i class="mi mi-file mi-sm"></i> New file</div>
+        <div class="menu-item"><i class="mi mi-folder mi-sm"></i> New folder</div>
+        <div class="menu-item"><i class="mi mi-edit mi-sm"></i> Rename</div>
+        <div class="menu-item"><i class="mi mi-delete mi-sm"></i> Delete</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== START MENU ===== -->
+  <div class="start-menu" id="startMenu">
+    <div class="user">
+      <div class="user-avatar"><i class="mi mi-user mi-sm"></i></div>
+      <div>User</div>
+    </div>
+    <div class="tiles">
+      <div class="tile"><i class="mi mi-mail mi-lg mi-white"></i>Mail</div>
+      <div class="tile"><i class="mi mi-weather mi-lg mi-white"></i>Weather</div>
+      <div class="tile"><i class="mi mi-music mi-lg mi-white"></i>Music</div>
+      <div class="tile"><i class="mi mi-photos mi-lg mi-white"></i>Photos</div>
+      <div class="tile"><i class="mi mi-games mi-lg mi-white"></i>Games</div>
+      <div class="tile"><i class="mi mi-settings mi-lg mi-white"></i>Settings</div>
+    </div>
+    <div class="app-list">
+      <a href="#"><i class="mi mi-menu mi-sm"></i> All apps</a>
+      <a href="#"><i class="mi mi-power mi-sm"></i> Shut down</a>
+    </div>
+  </div>
+
+  <!-- ===== TASKBAR ===== -->
+  <div class="taskbar">
+    <button class="start-button" id="startBtn">
+      <i class="mi mi-menu mi-lg mi-white"></i>
+    </button>
+    <div class="taskbar-item active"><i class="mi mi-folder mi-sm"></i> Explorer</div>
+    <div class="taskbar-item"><i class="mi mi-globe mi-sm"></i> Browser</div>
+    <div class="taskbar-item"><i class="mi mi-mail mi-sm"></i> Mail</div>
+  </div>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // Theme toggle
+    const themeBtn = document.getElementById('themeBtn');
+    const themeIcon = themeBtn.querySelector('.mi');
+    themeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-theme');
+      themeIcon.classList.toggle('mi-sun');
+      themeIcon.classList.toggle('mi-moon');
+    });
+
+    // Close window
+    document.getElementById('closeBtn').addEventListener('click', function () {
+      const win = this.closest('.window');
+      win.classList.add('closing');
+      setTimeout(() => win.style.display = 'none', 200);
+    });
+
+    // Progress increase
+    let progress = 35;
+    document.getElementById('progressBtn').addEventListener('click', () => {
+      progress = progress >= 100 ? 0 : progress + 15;
+      document.getElementById('progressBar').style.width = progress + '%';
+    });
+
+    // Start menu toggle
+    const startMenu = document.getElementById('startMenu');
+    let menuOpen = true;
+    document.getElementById('startBtn').addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      startMenu.style.display = menuOpen ? 'flex' : 'none';
+    });
+  </script>
+
+</body>
+                                                          </html>
