@@ -1,0 +1,35 @@
+{
+  "name": "win10-css",
+  "version": "1.0.0",
+  "description": "A Windows 10 style CSS framework with icons, dark theme and Fluent animations.",
+  "main": "10.css",
+  "style": "10.css",
+  "files": [
+    "10.css",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "css",
+    "framework",
+    "windows",
+    "win10",
+    "ui",
+    "dark-theme",
+    "icons",
+    "fluent-design"
+  ],
+  "author": "evgeniyromanenko26-cmd",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evgeniyromanenko26-cmd/10-css.git"
+  },
+  "bugs": {
+    "url": "https://github.com/evgeniyromanenko26-cmd/10-css/issues"
+  },
+  "homepage": "https://evgeniyromanenko26-cmd.github.io/10-css/",
+  "sideEffects": [
+    "*.css"
+  ]
+}
