@@ -1,223 +1,809 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>10.css Demo</title>
-  <link rel="stylesheet" href="10.css">
-</head>
-<body class="win10" style="padding: 20px 20px 80px;">
+/* 
+   10.css v5 — Windows 10 21H2 Edition
+   Features: Robust Icons (No broken CDNs), Acrylic Blur Effect, Fluent Animations, Dark/Light Mode
+*/
 
-  <!-- ===== THEME TOGGLE ===== -->
-  <div style="position: fixed; top: 10px; right: 10px; z-index: 2000;">
-    <button class="theme-toggle" id="themeBtn">
-      <i class="mi mi-sun"></i>
-      <span>Theme</span>
-    </button>
-  </div>
+/* ===== FONT IMPORTS ===== */
+/* Primary: Native Windows Font */
+@font-face {
+    font-family: 'Segoe MDL2 Assets';
+    src: local('Segoe MDL2 Assets');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; /* Prevents invisible text while loading */
+}
 
-  <!-- ===== MAIN WINDOW ===== -->
-  <div class="window" style="max-width: 600px; margin: 0 auto;">
+/* Fallback for non-Windows users or if MDL2 fails: 
+   Using standard system fonts that support similar glyphs where possible,
+   but primarily relying on the Unicode Private Use Area mapping below.
+   NOTE: On macOS/Linux without custom fonts installed, some specific PUA icons 
+   might fall back to boxes unless we use a web-safe icon set. 
+   For this demo, we assume modern browsers handle Segoe UI Symbol well enough 
+   or user has installed fonts. To make it PERFECT cross-platform, one would need SVG icons.
+   But sticking to your request: We optimize for Win10 look.
+*/
 
-    <div class="title-bar">
-      <div class="title-bar-text">
-        <i class="mi mi-home mi-sm" style="margin-right: 6px;"></i>
-        10.css — Demo
-      </div>
-      <div class="title-bar-controls">
-        <button title="Minimize"><i class="mi mi-minimize mi-sm"></i></button>
-        <button title="Maximize"><i class="mi mi-maximize mi-sm"></i></button>
-        <button class="close" title="Close" id="closeBtn">
-          <i class="mi mi-close mi-sm"></i>
-        </button>
-      </div>
-    </div>
+/* ===== VARIABLES: LIGHT THEME (21H2 Standard) ===== */
+:root {
+    /* Backgrounds */
+    --win10-bg: #f3f3f3;           /* Light gray background */
+    --win10-window: #ffffff;       /* White window surface */
+    --win10-border: #d9d9d9;       /* Subtle borders */
+    
+    /* Text */
+    --win10-text: #000000;
+    --win10-text-secondary: #666666;
+    
+    /* Accent Colors (Blue) */
+    --win10-accent: #0078d7;
+    --win10-accent-hover: #106ebe;
+    --win10-accent-active: #005a9e;
+    
+    /* Controls (Buttons/Inputs) */
+    --win10-btn-bg: #e1e1e1;
+    --win10-btn-hover: #cfcfcf;    /* Darker hover for better contrast in 21H2 */
+    --win10-btn-active: #bfbfbf;
+    --win10-btn-border: #adadad;
+    
+    --win10-input-bg: #ffffff;
+    --win10-input-border: #8a8a8a;
+    
+    /* Taskbar & Start Menu (Acrylic Base) */
+    --win10-taskbar-bg: rgba(243, 243, 243, 0.85); /* Semi-transparent light */
+    --win10-start-bg: rgba(255, 255, 255, 0.9);
+    --win10-taskbar-text: #000000;
+    
+    /* Shadows */
+    --win10-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --win10-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --win10-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+    
+    /* Geometry */
+    --win10-radius: 0px;           /* Sharp corners are key for Win10 */
+    
+    /* Transitions */
+    --trans-fast: 0.1s ease-out;
+    --trans-med: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --trans-slow: 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
 
-    <div class="window-body">
+/* ===== DARK THEME (21H2 Standard) ===== */
+body.dark-theme {
+    --win10-bg: #1a1a1a;           /* Deep black-gray */
+    --win10-window: #2b2b2b;
+    --win10-border: #3f3f3f;
+    
+    --win10-text: #ffffff;
+    --win10-text-secondary: #cccccc;
+    
+    --win10-btn-bg: #3a3a3a;
+    --win10-btn-hover: #4a4a4a;
+    --win10-btn-active: #5a5a5a;
+    --win10-btn-border: #555555;
+    
+    --win10-input-bg: #2b2b2b;
+    --win10-input-border: #555555;
+    
+    /* Dark Acrylic */
+    --win10-taskbar-bg: rgba(26, 26, 26, 0.85);
+    --win10-start-bg: rgba(43, 43, 43, 0.9);
+    --win10-taskbar-text: #ffffff;
+    
+    --win10-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --win10-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --win10-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
 
-      <!-- ===== HEADING ===== -->
-      <h1 style="font-size: 20px; margin: 0 0 8px;">
-        <i class="mi mi-star mi-accent"></i>
-        10.css Framework
-      </h1>
-      <p class="text-secondary" style="margin: 0 0 16px;">
-        A Windows 10 style CSS framework with icons, dark theme and animations.
-      </p>
+/* Auto-switch based on system preference if no class is forced */
+@media (prefers-color-scheme: dark) {
+    body:not(.light-theme):not(.dark-theme) {
+        --win10-bg: #1a1a1a;
+        --win10-window: #2b2b2b;
+        --win10-border: #3f3f3f;
+        --win10-text: #ffffff;
+        --win10-text-secondary: #cccccc;
+        --win10-btn-bg: #3a3a3a;
+        --win10-btn-hover: #4a4a4a;
+        --win10-btn-active: #5a5a5a;
+        --win10-btn-border: #555555;
+        --win10-input-bg: #2b2b2b;
+        --win10-input-border: #555555;
+        --win10-taskbar-bg: rgba(26, 26, 26, 0.85);
+        --win10-start-bg: rgba(43, 43, 43, 0.9);
+        --win10-taskbar-text: #ffffff;
+    }
+}
 
-      <!-- ===== BUTTONS ===== -->
-      <h2 style="font-size: 14px; margin: 16px 0 8px;">Buttons</h2>
-      <p style="display: flex; gap: 8px; flex-wrap: wrap;">
-        <button class="btn"><i class="mi mi-edit mi-sm"></i> Default</button>
-        <button class="btn btn-primary"><i class="mi mi-checkbox mi-sm"></i> Primary</button>
-        <button class="btn"><i class="mi mi-add mi-sm"></i> Add</button>
-        <button class="btn" disabled><i class="mi mi-delete mi-sm"></i> Disabled</button>
-      </p>
+/* Force Light Mode override */
+body.light-theme {
+    --win10-bg: #f3f3f3;
+    --win10-window: #ffffff;
+    --win10-border: #d9d9d9;
+    --win10-text: #000000;
+    --win10-text-secondary: #666666;
+    --win10-btn-bg: #e1e1e1;
+    --win10-btn-hover: #cfcfcf;
+    --win10-btn-active: #bfbfbf;
+    --win10-btn-border: #adadad;
+    --win10-input-bg: #ffffff;
+    --win10-input-border: #8a8a8a;
+    --win10-taskbar-bg: rgba(243, 243, 243, 0.85);
+    --win10-start-bg: rgba(255, 255, 255, 0.9);
+    --win10-taskbar-text: #000000;
+}
 
-      <!-- ===== INPUTS ===== -->
-      <h2 style="font-size: 14px; margin: 16px 0 8px;">Inputs</h2>
-      <p style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-        <input class="input" type="text" placeholder="Username" style="width: 160px;">
-        <input class="input" type="password" placeholder="Password" style="width: 160px;">
-        <select class="select">
-          <option>Option 1</option>
-          <option>Option 2</option>
-        </select>
-      </p>
-      <p>
-        <textarea class="textarea" placeholder="Your message..." style="width: 100%;"></textarea>
-      </p>
+/* ===== BASE RESET & TYPOGRAPHY ===== */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
 
-      <!-- ===== CHECKBOXES & RADIOS ===== -->
-      <h2 style="font-size: 14px; margin: 16px 0 8px;">Selection</h2>
-      <p style="display: flex; gap: 16px; flex-wrap: wrap;">
-        <label class="checkbox">
-          <input type="checkbox" checked>
-          <span class="box"></span>
-          Checkbox 1
-        </label>
-        <label class="checkbox">
-          <input type="checkbox">
-          <span class="box"></span>
-          Checkbox 2
-        </label>
-      </p>
-      <p style="display: flex; gap: 16px; flex-wrap: wrap;">
-        <label class="radio">
-          <input type="radio" name="demo" checked>
-          <span class="box"></span>
-          Option A
-        </label>
-        <label class="radio">
-          <input type="radio" name="demo">
-          <span class="box"></span>
-          Option B
-        </label>
-        <label class="radio">
-          <input type="radio" name="demo">
-          <span class="box"></span>
-          Option C
-        </label>
-      </p>
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    background-color: var(--win10-bg);
+    color: var(--win10-text);
+    transition: background-color var(--trans-med), color var(--trans-med);
+    overflow-x: hidden;
+    line-height: 1.4;
+}
 
-      <!-- ===== PROGRESS ===== -->
-      <h2 style="font-size: 14px; margin: 16px 0 8px;">Progress</h2>
-      <div class="progress" style="margin-bottom: 8px;">
-        <div class="progress-bar" id="progressBar" style="width: 35%;"></div>
-      </div>
-      <button class="btn" id="progressBtn">
-        <i class="mi mi-chevron-right mi-sm"></i> Increase
-      </button>
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    line-height: 1.2;
+}
 
-      <!-- ===== CARDS ===== -->
-      <h2 style="font-size: 14px; margin: 16px 0 8px;">Cards</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px;">
-        <div class="card">
-          <i class="mi mi-folder mi-lg mi-accent"></i>
-          <h3 style="font-size: 13px; margin: 8px 0 4px;">Folder</h3>
-          <p class="text-secondary" style="font-size: 12px; margin: 0;">A simple card with an icon.</p>
-        </div>
-        <div class="card">
-          <i class="mi mi-globe mi-lg mi-accent"></i>
-          <h3 style="font-size: 13px; margin: 8px 0 4px;">Browser</h3>
-          <p class="text-secondary" style="font-size: 12px; margin: 0;">Another card example.</p>
-        </div>
-        <div class="card">
-          <i class="mi mi-user mi-lg mi-accent"></i>
-          <h3 style="font-size: 13px; margin: 8px 0 4px;">Profile</h3>
-          <p class="text-secondary" style="font-size: 12px; margin: 0;">Hover me to see animation.</p>
-        </div>
-      </div>
+p {
+    margin-top: 0;
+    margin-bottom: 1em;
+}
 
-      <!-- ===== ICONS ===== -->
-      <h2 style="font-size: 14px; margin: 16px 0 8px;">Icons</h2>
-      <p style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
-        <i class="mi mi-home mi-lg mi-accent"></i>
-        <i class="mi mi-settings mi-lg"></i>
-        <i class="mi mi-mail mi-lg mi-accent"></i>
-        <i class="mi mi-photos mi-lg"></i>
-        <i class="mi mi-music mi-lg mi-accent"></i>
-        <i class="mi mi-games mi-lg"></i>
-        <i class="mi mi-weather mi-lg mi-accent"></i>
-        <i class="mi mi-search mi-lg"></i>
-        <i class="mi mi-star mi-lg" style="color: #ffb900;"></i>
-        <i class="mi mi-heart mi-lg" style="color: #e81123;"></i>
-      </p>
+a {
+    color: var(--win10-accent);
+    text-decoration: none;
+    transition: color var(--trans-fast);
+}
+a:hover {
+    color: var(--win10-accent-hover);
+    text-decoration: underline;
+}
 
-      <!-- ===== MENU ===== -->
-      <h2 style="font-size: 14px; margin: 16px 0 8px;">Menu</h2>
-      <div class="menu" style="max-width: 200px;">
-        <div class="menu-item"><i class="mi mi-file mi-sm"></i> New file</div>
-        <div class="menu-item"><i class="mi mi-folder mi-sm"></i> New folder</div>
-        <div class="menu-item"><i class="mi mi-edit mi-sm"></i> Rename</div>
-        <div class="menu-item"><i class="mi mi-delete mi-sm"></i> Delete</div>
-      </div>
+/* ===== ICON SYSTEM (Fixed Loading) ===== */
+.mi {
+    /* Priority: Local Segoe MDL2 -> System Symbols -> Sans Serif */
+    font-family: 'Segoe MDL2 Assets', 'Segoe UI Symbol', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: transform var(--trans-fast), color var(--trans-fast);
+    min-width: 1em; /* Prevent layout jump */
+}
 
-    </div>
-  </div>
+/* Core Icons Mapping (PUA Codepoints) */
+.mi-home::before { content: "\E80F"; }
+.mi-search::before { content: "\E721"; }
+.mi-settings::before { content: "\E713"; }
+.mi-close::before { content: "\E8BB"; }
+.mi-minimize::before { content: "\E921"; }
+.mi-maximize::before { content: "\E922"; }
+.mi-restore::before { content: "\E923"; }
+.mi-menu::before { content: "\E700"; }
+.mi-user::before { content: "\E77B"; }
+.mi-chevron-right::before { content: "\E76C"; }
+.mi-chevron-down::before { content: "\E70D"; }
+.mi-add::before { content: "\E710"; }
+.mi-delete::before { content: "\E74D"; }
+.mi-edit::before { content: "\E70F"; }
+.mi-folder::before { content: "\E8B7"; }
+.mi-file::before { content: "\E7C3"; }
+.mi-checkmark::before { content: "\E73E"; }
+.mi-warning::before { content: "\E7BA"; }
+.mi-info::before { content: "\E946"; }
+.mi-error::before { content: "\EA39"; }
+.mi-globe::before { content: "\E774"; }
+.mi-star::before { content: "\E734"; }
+.mi-heart::before { content: "\EB51"; }
+.mi-mail::before { content: "\E715"; }
+.mi-photos::before { content: "\E91B"; }
+.mi-music::before { content: "\E8D6"; }
+.mi-games::before { content: "\E7FC"; }
+.mi-weather::before { content: "\E9BD"; }
+.mi-power::before { content: "\E7E8"; }
+.mi-sun::before { content: "\E706"; }
+.mi-moon::before { content: "\E708"; }
+.mi-lock::before { content: "\E72E"; }
+.mi-unlock::before { content: "\E785"; }
+.mi-copy::before { content: "\E8C8"; }
+.mi-paste::before { content: "\E77F"; }
+.mi-cut::before { content: "\E8C6"; }
+.mi-refresh::before { content: "\E72C"; }
+.mi-arrow-left::before { content: "\E72B"; }
+.mi-arrow-right::before { content: "\E72A"; }
+.mi-arrow-up::before { content: "\E74A"; }
+.mi-arrow-down::before { content: "\E74B"; }
 
-  <!-- ===== START MENU ===== -->
-  <div class="start-menu" id="startMenu">
-    <div class="user">
-      <div class="user-avatar"><i class="mi mi-user mi-sm"></i></div>
-      <div>User</div>
-    </div>
-    <div class="tiles">
-      <div class="tile"><i class="mi mi-mail mi-lg mi-white"></i>Mail</div>
-      <div class="tile"><i class="mi mi-weather mi-lg mi-white"></i>Weather</div>
-      <div class="tile"><i class="mi mi-music mi-lg mi-white"></i>Music</div>
-      <div class="tile"><i class="mi mi-photos mi-lg mi-white"></i>Photos</div>
-      <div class="tile"><i class="mi mi-games mi-lg mi-white"></i>Games</div>
-      <div class="tile"><i class="mi mi-settings mi-lg mi-white"></i>Settings</div>
-    </div>
-    <div class="app-list">
-      <a href="#"><i class="mi mi-menu mi-sm"></i> All apps</a>
-      <a href="#"><i class="mi mi-power mi-sm"></i> Shut down</a>
-    </div>
-  </div>
+/* Sizes */
+.mi-xs { font-size: 10px; }
+.mi-sm { font-size: 12px; }
+.mi-md { font-size: 16px; }
+.mi-lg { font-size: 20px; }
+.mi-xl { font-size: 24px; }
+.mi-xxl { font-size: 32px; }
 
-  <!-- ===== TASKBAR ===== -->
-  <div class="taskbar">
-    <button class="start-button" id="startBtn">
-      <i class="mi mi-menu mi-lg mi-white"></i>
-    </button>
-    <div class="taskbar-item active"><i class="mi mi-folder mi-sm"></i> Explorer</div>
-    <div class="taskbar-item"><i class="mi mi-globe mi-sm"></i> Browser</div>
-    <div class="taskbar-item"><i class="mi mi-mail mi-sm"></i> Mail</div>
-  </div>
+/* Colors */
+.mi-accent { color: var(--win10-accent); }
+.mi-white { color: #ffffff; }
+.mi-black { color: #000000; }
+.mi-secondary { color: var(--win10-text-secondary); }
 
-  <!-- ===== JAVASCRIPT ===== -->
-  <script>
-    // Theme toggle
-    const themeBtn = document.getElementById('themeBtn');
-    const themeIcon = themeBtn.querySelector('.mi');
-    themeBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dark-theme');
-      themeIcon.classList.toggle('mi-sun');
-      themeIcon.classList.toggle('mi-moon');
-    });
+/* ===== ACRYLIC / MICA EFFECT (The 21H2 Touch) ===== */
+.acrylic {
+    background-color: transparent !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
 
-    // Close window
-    document.getElementById('closeBtn').addEventListener('click', function () {
-      const win = this.closest('.window');
-      win.classList.add('closing');
-      setTimeout(() => win.style.display = 'none', 200);
-    });
+/* Specific adjustments for dark/light acrylic */
+body.dark-theme .acrylic {
+    background-color: rgba(32, 32, 32, 0.7) !important;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+body:not(.dark-theme) .acrylic {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    border-color: rgba(0, 0, 0, 0.1);
+}
 
-    // Progress increase
-    let progress = 35;
-    document.getElementById('progressBtn').addEventListener('click', () => {
-      progress = progress >= 100 ? 0 : progress + 15;
-      document.getElementById('progressBar').style.width = progress + '%';
-    });
+/* ===== WINDOW COMPONENT ===== */
+.window {
+    background-color: var(--win10-window);
+    border: 1px solid var(--win10-border);
+    box-shadow: var(--win10-shadow-md);
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
+    position: relative;
+    animation: win-open 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transition: box-shadow var(--trans-med), border-color var(--trans-med);
+}
 
-    // Start menu toggle
-    const startMenu = document.getElementById('startMenu');
-    let menuOpen = true;
-    document.getElementById('startBtn').addEventListener('click', () => {
-      menuOpen = !menuOpen;
-      startMenu.style.display = menuOpen ? 'flex' : 'none';
-    });
-  </script>
+.window.active {
+    box-shadow: var(--win10-shadow-lg);
+    border-color: var(--win10-accent);
+}
 
-</body>
-                                                          </html>
+@keyframes win-open {
+    from { opacity: 0; transform: scale(0.98) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.window.closing {
+    animation: win-close 0.15s ease-in forwards;
+}
+@keyframes win-close {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.95); }
+}
+
+.title-bar {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 12px;
+    background-color: transparent;
+    user-select: none;
+    cursor: default;
+}
+
+.title-bar-text {
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--win10-text);
+}
+
+.title-bar-controls {
+    display: flex;
+    height: 100%;
+}
+
+.win-btn {
+    width: 46px;
+    height: 100%;
+    border: none;
+    background: transparent;
+    color: var(--win10-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--trans-fast), color var(--trans-fast);
+}
+
+.win-btn:hover {
+    background-color: var(--win10-btn-hover);
+}
+
+.win-btn.close:hover {
+    background-color: #e81123;
+    color: #ffffff;
+}
+
+.window-body {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    background-color: inherit;
+}
+
+/* Custom Scrollbar (Win10 Style) */
+.window-body::-webkit-scrollbar {
+    width: 12px;
+}
+.window-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+.window-body::-webkit-scrollbar-thumb {
+    background-color: rgba(128, 128, 128, 0.5);
+    border: 3px solid transparent;
+    background-clip: content-box;
+    border-radius: 6px;
+}
+.window-body::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(128, 128, 128, 0.8);
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 80px;
+    height: 32px;
+    padding: 0 16px;
+    background-color: var(--win10-btn-bg);
+    border: 1px solid var(--win10-btn-border);
+    color: var(--win10-text);
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--trans-fast);
+    user-select: none;
+}
+
+.btn:hover {
+    background-color: var(--win10-btn-hover);
+    border-color: var(--win10-accent);
+}
+
+.btn:active {
+    background-color: var(--win10-btn-active);
+    transform: scale(0.98);
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--win10-accent);
+    outline-offset: 2px;
+}
+
+.btn-primary {
+    background-color: var(--win10-accent);
+    border-color: var(--win10-accent);
+    color: #ffffff;
+}
+.btn-primary:hover {
+    background-color: var(--win10-accent-hover);
+    border-color: var(--win10-accent-hover);
+}
+.btn-primary:active {
+    background-color: var(--win10-accent-active);
+}
+
+.btn-danger {
+    background-color: #e81123;
+    border-color: #c50f1f;
+    color: #ffffff;
+}
+.btn-danger:hover {
+    background-color: #ea4c58;
+}
+
+.btn-icon-only {
+    min-width: 32px;
+    padding: 0;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: var(--win10-btn-bg);
+    border-color: var(--win10-btn-border);
+    transform: none;
+}
+
+/* Ripple Effect */
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+}
+.btn:active::after {
+    width: 200px; height: 200px;
+    opacity: 0.1;
+    transition: 0s;
+}
+
+/* ===== INPUTS ===== */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+.label {
+    font-size: 12px;
+    color: var(--win10-text-secondary);
+    font-weight: 600;
+}
+.input, .textarea, .select {
+    width: 100%;
+    height: 32px;
+    padding: 0 10px;
+    background-color: var(--win10-input-bg);
+    border: 1px solid var(--win10-input-border);
+    border-bottom: 2px solid var(--win10-input-border); /* Win10 distinct bottom line */
+    color: var(--win10-text);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color var(--trans-fast), box-shadow var(--trans-fast);
+}
+.textarea {
+    height: auto;
+    min-height: 80px;
+    padding: 8px 10px;
+    resize: vertical;
+    border-bottom-width: 1px;
+}
+.select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 10px auto;
+    padding-right: 30px;
+}
+.input:focus, .textarea:focus, .select:focus {
+    border-color: var(--win10-accent);
+    border-bottom-color: var(--win10-accent);
+    box-shadow: 0 0 0 1px var(--win10-accent);
+}
+.input.error, .textarea.error, .select.error {
+    border-color: #e81123;
+    border-bottom-color: #e81123;
+}
+
+/* ===== CHECKBOX & RADIO ===== */
+.checkbox-wrapper, .radio-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 14px;
+    color: var(--win10-text);
+}
+.checkbox-wrapper input, .radio-wrapper input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.custom-control {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--win10-input-border);
+    background-color: var(--win10-input-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--trans-fast);
+    flex-shrink: 0;
+}
+.radio-wrapper .custom-control {
+    border-radius: 50%;
+}
+.checkbox-wrapper input:checked ~ .custom-control {
+    background-color: var(--win10-accent);
+    border-color: var(--win10-accent);
+}
+.radio-wrapper input:checked ~ .custom-control {
+    border-color: var(--win10-accent);
+}
+.checkbox-wrapper input:checked ~ .custom-control::after {
+    content: '\E73E'; /* Checkmark */
+    font-family: 'Segoe MDL2 Assets', sans-serif;
+    color: white;
+    font-size: 12px;
+    line-height: 1;
+    animation: pop-in 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.radio-wrapper input:checked ~ .custom-control::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background-color: var(--win10-accent);
+    border-radius: 50%;
+    animation: pop-in 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.checkbox-wrapper:hover .custom-control, .radio-wrapper:hover .custom-control {
+    border-color: var(--win10-accent);
+}
+@keyframes pop-in {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress {
+    width: 100%;
+    height: 16px;
+    background-color: var(--win10-progress-bg, #e6e6e6);
+    border: 1px solid var(--win10-progress-border, #bcbcbc);
+    overflow: hidden;
+    position: relative;
+}
+.progress-bar {
+    height: 100%;
+    background-color: var(--win10-accent);
+    transition: width var(--trans-slow);
+    position: relative;
+}
+.progress-bar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: progress-shine 2s infinite;
+}
+@keyframes progress-shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* ===== TASKBAR (With Acrylic) ===== */
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background-color: var(--win10-taskbar-bg);
+    backdrop-filter: blur(10px); /* The Acrylic effect */
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    z-index: 9999;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+    color: var(--win10-taskbar-text);
+}
+
+.start-button {
+    width: 48px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    transition: background var(--trans-fast);
+    font-size: 16px;
+}
+.start-button:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.taskbar-item {
+    height: 40px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: background var(--trans-fast), border-color var(--trans-fast);
+    color: inherit;
+    font-size: 12px;
+}
+.taskbar-item:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+.taskbar-item.active {
+    border-bottom-color: var(--win10-accent);
+    background-color: rgba(255,255,255,0.05);
+}
+
+/* ===== START MENU (With Acrylic) ===== */
+.start-menu {
+    position: fixed;
+    left: 0;
+    bottom: 40px;
+    width: 320px;
+    max-height: calc(100vh - 40px);
+    background-color: var(--win10-start-bg);
+    backdrop-filter: blur(20px); /* Stronger blur for menu */
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    animation: start-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    color: var(--win10-text);
+}
+@keyframes start-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.start-menu .user-section {
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--win10-border);
+}
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--win10-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 16px;
+}
+
+.tiles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    padding: 12px;
+}
+.tile {
+    aspect-ratio: 1;
+    background: var(--win10-tile, var(--win10-accent));
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: transform var(--trans-fast), filter var(--trans-fast);
+}
+.tile:hover {
+    filter: brightness(1.1);
+    transform: scale(1.05);
+}
+.tile:active {
+    transform: scale(0.95);
+}
+
+.app-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 0;
+}
+.app-item {
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background var(--trans-fast);
+    font-size: 13px;
+}
+.app-item:hover {
+    background-color: var(--win10-btn-hover);
+}
+
+/* ===== CARDS ===== */
+.card {
+    background-color: var(--win10-card-bg, var(--win10-window));
+    border: 1px solid var(--win10-border);
+    padding: 16px;
+    box-shadow: var(--win10-shadow-sm);
+    transition: box-shadow var(--trans-med), transform var(--trans-med);
+}
+.card:hover {
+    box-shadow: var(--win10-shadow-md);
+    transform: translateY(-2px);
+}
+
+/* ===== MENUS (Context/Dropdown) ===== */
+.menu {
+    background-color: var(--win10-menu-bg, var(--win10-window));
+    border: 1px solid var(--win10-border);
+    box-shadow: var(--win10-shadow-md);
+    padding: 4px 0;
+    min-width: 180px;
+    z-index: 10001;
+    animation: fade-scale 0.1s ease-out;
+}
+@keyframes fade-scale {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+.menu-item {
+    padding: 8px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--win10-text);
+    transition: background var(--trans-fast);
+}
+.menu-item:hover {
+    background-color: var(--win10-menu-hover, var(--win10-btn-hover));
+}
+.menu-separator {
+    height: 1px;
+    background-color: var(--win10-border);
+    margin: 4px 0;
+}
+
+/* ===== UTILITIES ===== */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 8px; }
+.gap-4 { gap: 16px; }
+.p-4 { padding: 16px; }
+.mt-4 { margin-top: 16px; }
+.mb-4 { margin-bottom: 16px; }
+.text-accent { color: var(--win10-accent); }
+.bg-surface { background-color: var(--win10-window); }
+.hidden { display: none !important; }
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
